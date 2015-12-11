@@ -14,8 +14,8 @@ router.get('/', (req, res) => {
 /* GET courses list. */
 router.get('/courselist', (req, res) => {
   let ks = req.kiwiscraper;
-  ks.getCourses((err, results) => {
-    res.json(results);
+  ks.listCourses((err, courses) => {
+    res.json(courses);
   });
 });
 
@@ -28,8 +28,9 @@ router.get('/searched/notfound', (req, res) => {
 router.get('/searched/:id', (req, res) => {
   let ks = req.kiwiscraper;
   let courseID = req.params.id;
-  ks.getCourses((err, results) => {});
-  res.json(ks.coursesIDtoObject[courseID]);
+  ks.getCourseObjectByID(courseID, (err, courseObj) => {
+    res.json(courseObj);
+  });
 
   // TODO
   // This method need to find searched results in database
@@ -40,22 +41,22 @@ router.get('/searched/:id', (req, res) => {
 router.get('/info/:id.json', (req, res) => {
   let ks = req.kiwiscraper;
   let courseID = req.params.id;
-  ks.getCourses((err, results) => {});
-  res.json(ks.coursesIDtoObject[courseID]);
+  ks.getCourseObjectByID(courseID, (err, courseObj) => {
+    res.json(courseObj);
+  });
 });
 
 /* POST search courses with a keyword. */
 router.post('/search', (req, res) => {
   let keyword = req.body.keyword;
   let ks = req.kiwiscraper;
-  ks.getCourses((err, results) => {});
-  let coursesArr = ks.searchCourseName(keyword);
-  if (coursesArr.length === 0) {
-    res.redirect('/api/v1/searched/notfound');
-  } else {
-    res.json(coursesArr);
-  }
-
+  ks.searchCourse(keyword, (err, found) => {
+    if (found.length === 0) {
+      res.redirect('/api/v1/searched/notfound');
+    } else {
+      res.json(found);
+    }
+  });
 });
 
 module.exports = router;
