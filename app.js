@@ -5,6 +5,7 @@ let bodyParser = require('body-parser');
 let KiwiScraper = require('kiwi-scraperjs');
 
 let routes = require('./routes/index.js');
+let course = require('./routes/course.js');
 
 let app = express();
 
@@ -20,7 +21,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/v1', routes);
+app.use('/', routes);
+app.use('/api/v1', course);
 
 /// catch 404 and forwarding to error handler
 app.use((req, res, next) => {
