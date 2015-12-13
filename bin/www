@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 'use strict';
+var debug = require('debug')('kiwi-farmjs');
 let app = require('../app');
 
 app.set('port', process.env.PORT || 3000);
 
 let server = app.listen(app.get('port'), () => {
-  console.log(`Express server listening on port ${server.address().port}`);
+  debug(`Express server listening on port ${server.address().port}`);
 });
