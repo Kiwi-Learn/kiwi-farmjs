@@ -9,9 +9,9 @@
   "author": "John-Lin <linton.tw@gmail.com> (http://linton.tw)",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.14.1",
+    "body-parser": "^1.14.2",
     "express": "^4.13.3",
-    "kiwi-scraperjs": "^0.2.1",
+    "kiwi-scraperjs": "^0.3.0",
     "morgan": "^1.6.1"
   },
   "devDependencies": {

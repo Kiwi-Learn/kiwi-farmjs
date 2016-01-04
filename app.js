@@ -22,6 +22,15 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/api/v1/fetch', (req, res, next) => {
+  let opts = {
+    forceUpdate: true,
+  };
+  let ks = new KiwiScraper(opts);
+  req.kiwiscraper = ks;
+  next();
+});
+
 app.use('/', routes);
 app.use('/api/v1', course);
 app.use('/api/v1', update);
