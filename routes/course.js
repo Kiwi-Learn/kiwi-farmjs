@@ -13,9 +13,19 @@ router.get('/', (req, res) => {
 
 /* GET courses list. */
 router.get('/courselist', (req, res) => {
-  let ks = req.kiwiscraper;
-  ks.listCourses((err, courses) => {
-    res.json(courses);
+  let memCache = req.memClient;
+  memCache.get('courselist', (err, val) => {
+    let debug = require('debug')('memcache');
+    if (err) debug(err);
+    if (!val || err) {
+      let ks = req.kiwiscraper;
+      ks.listCourses((err, courses) => {
+        res.json(courses);
+      });
+    } else {
+      let courses = JSON.parse(val.toString());
+      res.json(courses);
+    }
   });
 });
 
