@@ -1,2 +1,6 @@
-node_modules/
+/config/credentials.json
+/config/default.json
+/config/production.json
+/node_modules
+*.log
 .DS_Store
