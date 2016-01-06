@@ -3,6 +3,20 @@ let express = require('express');
 let logger = require('morgan');
 let bodyParser = require('body-parser');
 let KiwiScraper = require('kiwi-scraperjs');
+var memjs = require('memjs');
+
+const config = require('config');
+const hasMemCachierConfig = config.has('MEMCACHIER');
+
+let memClient = null;
+
+if (hasMemCachierConfig) {
+  memClient = memjs.Client.create(
+    `${config.get('MEMCACHIER.username')}:${config.get('MEMCACHIER.password')}@${config.get('MEMCACHIER.server')}`);
+} else {
+  memClient = memjs.Client.create(
+    `${process.env.MEMCACHIER_USERNAME}:${process.env.MEMCACHIER_PASSWORD}@${process.env.MEMCACHIER_SERVER}`);
+}
 
 let routes = require('./routes/index.js');
 let course = require('./routes/course.js');
@@ -19,6 +33,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use((req, res, next) => {
   let ks = new KiwiScraper();
   req.kiwiscraper = ks;
+  req.memClient = memClient;
   next();
 });
 
