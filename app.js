@@ -3,19 +3,35 @@ let express = require('express');
 let logger = require('morgan');
 let bodyParser = require('body-parser');
 let KiwiScraper = require('kiwi-scraperjs');
-var memjs = require('memjs');
+let memjs = require('memjs');
+let sqs = require('sqs');
 
 const config = require('config');
 const hasMemCachierConfig = config.has('MEMCACHIER');
+const hasAwsConfig = config.has('MEMCACHIER');
 
 let memClient = null;
-
 if (hasMemCachierConfig) {
   memClient = memjs.Client.create(
     `${config.get('MEMCACHIER.username')}:${config.get('MEMCACHIER.password')}@${config.get('MEMCACHIER.server')}`);
 } else {
   memClient = memjs.Client.create(
     `${process.env.MEMCACHIER_USERNAME}:${process.env.MEMCACHIER_PASSWORD}@${process.env.MEMCACHIER_SERVER}`);
+}
+
+let sqsQueue = null;
+if (hasAwsConfig) {
+  sqsQueue = sqs({
+    access: `${config.get('AWS_CREDENTIALS.accessKeyId')}`,
+    secret: `${config.get('AWS_CREDENTIALS.secretAccessKey')}`,
+    region: `${config.get('AWS_CREDENTIALS.region')}`,
+  });
+} else {
+  // It will use env variables to configure
+  // SQS_ACCESS_KEY
+  // SQS_SECRET_KEY=
+  // SQS_REGION
+  sqsQueue = sqs();
 }
 
 let routes = require('./routes/index.js');
@@ -34,6 +50,7 @@ app.use((req, res, next) => {
   let ks = new KiwiScraper();
   req.kiwiscraper = ks;
   req.memClient = memClient;
+  req.sqsClient = sqsQueue;
   next();
 });
 
