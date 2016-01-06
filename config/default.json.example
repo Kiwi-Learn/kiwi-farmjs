@@ -1,0 +1,12 @@
+{
+  "AWS_CREDENTIALS": {
+    "accessKeyId": "...",
+    "secretAccessKey": "...",
+    "region": "eu-central-1"
+  },
+  "MEMCACHIER": {
+    "username": "...",
+    "password": "...",
+    "server": "..."
+  }
+}
