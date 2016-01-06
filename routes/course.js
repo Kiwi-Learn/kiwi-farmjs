@@ -59,6 +59,10 @@ router.get('/info/:id.json', (req, res) => {
 /* POST search courses with a keyword. */
 router.post('/search', (req, res) => {
   let keyword = req.body.keyword;
+  let sqsClient = req.sqsClient;
+  sqsClient.push('Kiwi_messenger', keyword, (err) => {
+    if (err) debug(err);
+  });
   let ks = req.kiwiscraper;
   ks.searchCourse(keyword, (err, found) => {
     if (found.length === 0) {
