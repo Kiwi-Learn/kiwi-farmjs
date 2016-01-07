@@ -37,6 +37,7 @@ if (hasAwsConfig) {
 let routes = require('./routes/index.js');
 let course = require('./routes/course.js');
 let update = require('./routes/update.js');
+let popularity = require('./routes/popularity.js');
 
 let app = express();
 
@@ -66,6 +67,7 @@ app.use('/api/v1/fetch', (req, res, next) => {
 app.use('/', routes);
 app.use('/api/v1', course);
 app.use('/api/v1', update);
+app.use('/api/v1', popularity);
 
 /// catch 404 and forwarding to error handler
 // app.use((req, res, next) => {
