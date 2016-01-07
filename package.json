@@ -14,6 +14,7 @@
     "express": "^4.13.3",
     "joi": "^7.1.0",
     "kiwi-scraperjs": "^0.3.0",
+    "lodash": "^3.10.1",
     "memjs": "^0.9.0",
     "moment": "^2.11.0",
     "morgan": "^1.6.1",
