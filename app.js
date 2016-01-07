@@ -31,7 +31,11 @@ if (hasAwsConfig) {
   // SQS_ACCESS_KEY
   // SQS_SECRET_KEY=
   // SQS_REGION
-  sqsQueue = sqs();
+  sqsQueue = sqs({
+    access: process.env.AWS_ACCESS_KEY_ID,
+    secret: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
+  });
 }
 
 let routes = require('./routes/index.js');
