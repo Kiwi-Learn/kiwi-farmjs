@@ -13,7 +13,7 @@
     "config": "^1.17.1",
     "express": "^4.13.3",
     "joi": "^7.1.0",
-    "kiwi-scraperjs": "^0.4.1",
+    "kiwi-scraperjs": "^0.4.2",
     "lodash": "^3.10.1",
     "memjs": "^0.9.0",
     "moment": "^2.11.0",
