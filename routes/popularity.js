@@ -9,7 +9,7 @@ let router = express.Router();
 router.post('/popularity', (req, res) => {
   req.accepts(['application/json']);
   let todayPopularity = {
-    date: moment().format('MM-DD-YYYY'),
+    date: moment.utc().format('MM-DD-YYYY'),
     popularity: req.body.results,
   };
 
