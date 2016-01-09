@@ -2,7 +2,7 @@
 let express = require('express');
 let router = express.Router();
 
-router.put('/fetch', (req, res) => {
+router.put('/fetch/courselist', (req, res) => {
   let ks = req.kiwiscraper;
   let memCache = req.memClient;
   ks.listCourses((err, courses) => {
