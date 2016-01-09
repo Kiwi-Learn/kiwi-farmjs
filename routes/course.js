@@ -96,27 +96,28 @@ router.get('/couseserial/:serial', (req, res) => {
       res.status(204).send('No Content');
     } else {
       let serialmap = JSON.parse(val.toString());
-      let matchcid = serialmap.searchserial;
+      let matchcid = parseInt(serialmap[searchserial]);
       let options = {
         body: {
           courseId: matchcid,
           dayNumber: 7,
         },
+        json: true,
       };
-
-      got.post(options, videoCountAPI)
+      got.post(videoCountAPI, options)
         .then(response => {
           let dateCountPair = [];
           let j = 0;
-          for (let i of response.body) {
+          for (let i of response.body.result) {
             let dateTmp = moment().subtract(j, 'days').format('MMM Do dddd');
             dateCountPair.push([dateTmp, i]);
             j += 1;
           }
 
-          res.status(200).json(dateCountPair);
+          res.status(200).json({ results: dateCountPair });
         })
         .catch(error => {
+          debug(error);
           res.status(500).send('Internal Error');
         });
     }

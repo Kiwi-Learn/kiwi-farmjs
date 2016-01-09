@@ -30,7 +30,8 @@ router.put('/fetch/courseserials', (req, res) => {
   let got = req.got;
   got.get(courseSerialAPI)
     .then(response => {
-      let serialMap = JSON.stringify(response.body);
+      // should be parse serialMap to JSON but SC return string
+      let serialMap = response.body;
       memCache.set('serialmap', serialMap, (err, val) => {
         let debug = require('debug')('memcache');
         if (err) debug(err);
