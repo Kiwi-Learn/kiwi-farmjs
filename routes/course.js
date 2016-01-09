@@ -3,7 +3,7 @@ const config = require('config');
 const hasSCConfig = config.has('SHARECOURSE');
 let express = require('express');
 let router = express.Router();
-let _ = requir('lodash');
+let _ = require('lodash');
 let moment = require('moment');
 
 let videoCountAPI = null;
