@@ -73,4 +73,22 @@ router.post('/search', (req, res) => {
   });
 });
 
+/* POST course viewd a week. */
+router.get('/couseserial/:serial', (req, res) => {
+  let searchserial = req.params.serial;
+  let memCache = req.memClient;
+  let got = req.got;
+  memCache.get('serialmap', (err, val) => {
+    let debug = require('debug')('memcache');
+    if (err) debug(err);
+    if (!val || err) {
+      res.status(204).send('No Content');
+      });
+    } else {
+      let serialmap = JSON.parse(val.toString());
+      let matchcid = serialmap[searchserial];
+    }
+  });
+});
+
 module.exports = router;
