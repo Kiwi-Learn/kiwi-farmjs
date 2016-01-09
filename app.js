@@ -57,6 +57,7 @@ app.use((req, res, next) => {
   req.kiwiscraper = ks;
   req.memClient = memClient;
   req.sqsClient = sqsQueue;
+  req.got = got;
   next();
 });
 
@@ -65,7 +66,6 @@ app.use('/api/v1/fetch', (req, res, next) => {
     forceUpdate: true,
   };
   let ks = new KiwiScraper(opts);
-  req.got = got;
   req.kiwiscraper = ks;
   next();
 });
