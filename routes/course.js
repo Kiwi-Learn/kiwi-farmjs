@@ -113,11 +113,11 @@ router.get('/couseserial/:serial', (req, res) => {
           }
 
           let dateCountPair = [];
-          let j = 0;
+          let j = 6;
           for (let i of response.body.result) {
             let dateTmp = moment().subtract(j, 'days').format('MMM Do dddd');
             dateCountPair.push([dateTmp, i]);
-            j += 1;
+            j -= 1;
           }
 
           res.status(200).json({ results: dateCountPair });
