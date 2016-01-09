@@ -1,6 +1,16 @@
 'use strict';
+const config = require('config');
+const hasSCConfig = config.has('SHARECOURSE');
 let express = require('express');
 let router = express.Router();
+
+let courseSerialAPI = null;
+
+if (hasSCConfig) {
+  courseSerialAPI = config.get('SHARECOURSE.courseSerialAPI');
+} else {
+  courseSerialAPI = process.env.SHARECOURSE_COURSESERIALAPI;
+}
 
 router.put('/fetch/courselist', (req, res) => {
   let ks = req.kiwiscraper;
@@ -18,18 +28,17 @@ router.put('/fetch/courselist', (req, res) => {
 router.put('/fetch/courseserials', (req, res) => {
   let memCache = req.memClient;
   let got = req.got;
-  let apiUrl = 'http://www.sharecourse.net/sharecourse/api/android/courseserial';
-  got.get(apiUrl)
-	 .then(response => {
-     let serialMap = JSON.stringify(response.body);
-     memCache.set('serialmap', serialMap, (err, val) => {
-       let debug = require('debug')('memcache');
-       if (err) debug(err);
-       res.status(201).send('Created');
-     }, 86400);
-   }).catch(error => {
-    res.status(500).send();
-  });
+  got.get(courseSerialAPI)
+    .then(response => {
+      let serialMap = JSON.stringify(response.body);
+      memCache.set('serialmap', serialMap, (err, val) => {
+        let debug = require('debug')('memcache');
+        if (err) debug(err);
+        res.status(201).send('Created');
+      }, 86400);
+    }).catch(error => {
+      res.status(500).send();
+    });
 });
 
 module.exports = router;
