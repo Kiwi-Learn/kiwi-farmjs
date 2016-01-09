@@ -106,6 +106,11 @@ router.get('/couseserial/:serial', (req, res) => {
       };
       got.post(videoCountAPI, options)
         .then(response => {
+          if (response.statusCode === 204) {
+            return res.status(204).end();
+          } else (response.statusCode === 400) {
+            return res.status(204).end();
+          }
           let dateCountPair = [];
           let j = 0;
           for (let i of response.body.result) {
