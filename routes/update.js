@@ -18,19 +18,18 @@ router.put('/fetch/courselist', (req, res) => {
 router.put('/fetch/courseserials', (req, res) => {
   let memCache = req.memClient;
   let got = req.got;
-  got.get('http://www.sharecourse.net/sharecourse/api/android/courseserial')
-	.then(response => {
-    let serialMap = JSON.stringify(response.body);
-    memCache.set('serialmap', serialMap, (err, val) => {
-      let debug = require('debug')('memcache');
-      if (err) debug(err);
-      res.status(201).send('Created');
-    }, 86400);
-	})
-	.catch(error => {
+  let apiUrl = 'http://www.sharecourse.net/sharecourse/api/android/courseserial';
+  got.get(apiUrl)
+	 .then(response => {
+     let serialMap = JSON.stringify(response.body);
+     memCache.set('serialmap', serialMap, (err, val) => {
+       let debug = require('debug')('memcache');
+       if (err) debug(err);
+       res.status(201).send('Created');
+     }, 86400);
+   }).catch(error => {
     res.status(500).send();
-	});
-
+  });
 });
 
 module.exports = router;
