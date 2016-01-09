@@ -1,8 +1,8 @@
 'use strict';
-const vogels = require('vogels');
-const Joi = require('joi');
-const config = require('config');
-const debug = require('debug')('configure');
+let vogels = require('vogels');
+let Joi = require('joi');
+let config = require('config');
+let debug = require('debug')('configure');
 
 const hasKeyID = config.has('AWS_CREDENTIALS.accessKeyId');
 const hasAccessKey = config.has('AWS_CREDENTIALS.secretAccessKey');
