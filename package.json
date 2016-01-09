@@ -12,6 +12,7 @@
     "body-parser": "^1.14.2",
     "config": "^1.17.1",
     "express": "^4.13.3",
+    "got": "^6.0.0",
     "joi": "^7.1.0",
     "kiwi-scraperjs": "^0.4.3",
     "lodash": "^3.10.1",
