@@ -1,7 +1,18 @@
 'use strict';
+const config = require('config');
+const hasSCConfig = config.has('SHARECOURSE');
 let express = require('express');
 let router = express.Router();
+let _ = require('lodash');
+let moment = require('moment');
 
+let videoCountAPI = null;
+
+if (hasSCConfig) {
+  videoCountAPI = config.get('SHARECOURSE.videoCountAPI');;
+} else {
+  videoCountAPI = process.env.SHARECOURSE_VIDEOCOUNTAPI;
+}
 /* GET Root path. */
 router.get('/', (req, res) => {
   res.send(`Hello there!! This is Kiwi farm service. \
@@ -69,6 +80,45 @@ router.post('/search', (req, res) => {
       res.redirect('/api/v1/searched/notfound');
     } else {
       res.json(found);
+    }
+  });
+});
+
+/* POST course viewd a week. */
+router.get('/couseserial/:serial', (req, res) => {
+  let searchserial = req.params.serial;
+  let memCache = req.memClient;
+  let got = req.got;
+  memCache.get('serialmap', (err, val) => {
+    let debug = require('debug')('memcache');
+    if (err) debug(err);
+    if (!val || err) {
+      res.status(204).send('No Content');
+    } else {
+      let serialmap = JSON.parse(val.toString());
+      let matchcid = serialmap.searchserial;
+      let options = {
+        body: {
+          courseId: matchcid,
+          dayNumber: 7,
+        },
+      };
+
+      got.post(options, videoCountAPI)
+        .then(response => {
+          let dateCountPair = [];
+          let j = 0;
+          for (let i of response.body) {
+            let dateTmp = moment().subtract(j, 'days').format('MMM Do dddd');
+            dateCountPair.push([dateTmp, i]);
+            j += 1;
+          }
+
+          res.status(200).json(dateCountPair);
+        })
+        .catch(error => {
+          res.status(500).send('Internal Error');
+        });
     }
   });
 });
