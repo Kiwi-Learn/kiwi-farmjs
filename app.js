@@ -5,6 +5,7 @@ let bodyParser = require('body-parser');
 let KiwiScraper = require('kiwi-scraperjs');
 let memjs = require('memjs');
 let sqs = require('sqs');
+let got = require('got');
 
 const config = require('config');
 const hasMemCachierConfig = config.has('MEMCACHIER');
@@ -64,6 +65,7 @@ app.use('/api/v1/fetch', (req, res, next) => {
     forceUpdate: true,
   };
   let ks = new KiwiScraper(opts);
+  req.got = got;
   req.kiwiscraper = ks;
   next();
 });
