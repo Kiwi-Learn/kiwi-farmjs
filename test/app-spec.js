@@ -19,3 +19,24 @@ describe('Kiwi FarmJS API Tests', () => {
       .expect(200, done);
   });
 });
+
+describe('PUT /api/v1/fetch/courseserials', () => {
+  it('should store new data form sharecourse to memcachier whit 201', function(done) {
+    this.timeout(40000);
+    supertest(app)
+      .put('/api/v1/fetch/courseserials')
+      .expect(201, done);
+  });
+});
+
+// describe('GET /api/v1/couseserial/:serial', () => {
+//   it('should retuen a array (200) , or No Coutent (204)', function(done) {
+//     this.timeout(25000);
+//     supertest(app)
+//       .put('/api/v1/couseserial/:serial')
+//       .expect(201, done)
+//       .end((err, res) => {
+//         if (err) throw err;
+//       });
+//   });
+// });
